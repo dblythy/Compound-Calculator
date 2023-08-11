@@ -51,4 +51,4 @@ jobs:
 
 concurrency:
   group: ci-test
-  cancel-in-progress: false
+  cancel-in-progress: true

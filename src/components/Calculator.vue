@@ -34,7 +34,7 @@
       label="Interest Period"
       :options="['Monthly', 'Quarterly', 'Annually', 'At Maturity']"
     />
-    {{ balance.result }}
+
     <div v-if="balance?.error">
       {{ balance.error }}
     </div>
