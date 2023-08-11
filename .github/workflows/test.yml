@@ -1,0 +1,37 @@
+---
+name: Test Frontend
+on:
+  pull_request:
+    branches:
+      - "**"
+  push:
+    branches:
+      - main
+  workflow_dispatch: null
+jobs:
+  test-backend:
+    name: Test Frontend
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 16.x
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Check NPM lock file version
+        uses: mansona/npm-lockfile-version@v1
+        with:
+          version: 2
+      - name: Install Dependencies
+        run: npm i
+      - name: Check Linting
+        run: npm run lint
+      - name: Run Tests
+        run: npm run test:unit
+concurrency:
+  group: ci-test
+  cancel-in-progress: false
