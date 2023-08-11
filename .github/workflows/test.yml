@@ -9,7 +9,7 @@ on:
       - main
   workflow_dispatch: null
 jobs:
-  test-backend:
+  test-frontend:
     name: Test Frontend
     runs-on: ubuntu-latest
     strategy:
@@ -32,6 +32,23 @@ jobs:
         run: npm run lint
       - name: Run Tests
         run: npm run test:unit
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    needs: [test-frontend]
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          npm install
+          npm run build
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
+
 concurrency:
   group: ci-test
   cancel-in-progress: false
